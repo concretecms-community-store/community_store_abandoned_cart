@@ -22,3 +22,9 @@ __Settings__
 * From email and from name
 * Subject and content (with replacement tags)
 * Header and footer (html)
+
+__Cron Jobs__
+
+A cron job runs to send the abandoned cart mails.  
+Depending on the amount of visitors, set the cron job to run every 15 minutes. This should be more than enough.  
+If the store has a huge amount of visitors and a lot of abandoned carts, run the cron job every 5 minutes. 
