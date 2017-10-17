@@ -2,7 +2,7 @@
 namespace Concrete\Package\CommunityStoreAbandonedCart;
 
 /**
- * Community Store Mollie
+ * Community Store Abandoned Cart
  *
  * @author Jos De Berdt <www.josdeberdt.be>
  * @version 0.0.8
