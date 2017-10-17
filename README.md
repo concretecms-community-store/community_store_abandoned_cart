@@ -5,7 +5,7 @@ Abandoned Cart package for Concrete5 Community Store
 __What is it?__  
 A gentle reminder mail to persuade people to buy from your store.  
 This mail usually has a link to retrieve the products that were in the cart before abandoning.  
-Because these mails have high conversion rates... It is a must for every e-commerce.
+Because these mails have high conversion rates... It is a must for every e-commerce.   
 -- Always test before using on a live website. --  
 
 So how does it work :  
