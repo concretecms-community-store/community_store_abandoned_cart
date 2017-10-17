@@ -6,7 +6,7 @@ __What is it?__
 A gentle reminder mail to persuade people to buy from your store.  
 This mail usually has a link to retrieve the products that were in the cart before abandoning.  
 Because these mails have high conversion rates... It is a must for every e-commerce.   
--- Always test before using on a live website. --  
+_-- Always test before using on a live website. --_  
 
 So how does it work :  
 A person starts with the checkout procedure but decide not to order (Shipping cost too high, just browsing, order later, ...).  
