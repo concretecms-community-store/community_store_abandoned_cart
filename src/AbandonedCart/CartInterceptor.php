@@ -55,6 +55,11 @@ class CartInterceptor extends RouteController
         $canSend = 1;
       }
 
+      if(!$customer->isGuest() && empty($customeremail)){
+        $regUser = $customer->getUserInfo();
+        $customeremail = $regUser->getUserEmail();
+      }
+
       if(!empty($customeremail) && $canSend == 1){
         //if duplicate, then the client is back within the allocated time to send the email...
         $isDuplicate = StoreAbandonedCart::getAbandonedCartByMail($customeremail);
