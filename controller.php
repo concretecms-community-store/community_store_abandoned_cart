@@ -5,7 +5,7 @@ namespace Concrete\Package\CommunityStoreAbandonedCart;
  * Community Store Abandoned Cart
  *
  * @author Jos De Berdt <www.josdeberdt.be>
- * @version 0.0.8
+ * @version 0.0.9
  * @package community_store_abandoned_cart
  * @github jozzeh
  */
@@ -28,7 +28,7 @@ class Controller extends Package{
 
   protected $pkgHandle = 'community_store_abandoned_cart';
   protected $appVersionRequired = '5.7.5.8';
-  protected $pkgVersion = '0.0.8';
+  protected $pkgVersion = '0.0.9';
 
   public function getPackageDescription(){
       return t("Abandoned Cart Mail Package for Community Store.");
@@ -81,8 +81,14 @@ class Controller extends Package{
               array('javascript', 'community-store-abandoned-cart'),
           )
       );
-      $view = View::getInstance();
-      $view->requireAsset('community-store-abandoned-cart');
+   
+      $requestURI = $_SERVER['REQUEST_URI'];
+      $requestArray = explode("/", $requestURI);
+      $lastEl = array_values(array_slice($requestArray, -1))[0];
+      if($lastEl == "checkout"){
+         $view = View::getInstance();
+         $view->requireAsset('community-store-abandoned-cart');
+      }
 
       Events::addListener('on_community_store_order', function($event){
           //when an order has been placed, we need to crosscheck the abandoned cart Table
