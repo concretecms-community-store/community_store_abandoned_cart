@@ -227,7 +227,7 @@ class Abandoned
 
         $bccmail = $packageObject->getConfig()->get('abandoned_cart.bcc_mail');
         if(!empty($bccmail)){
-            self::generateBccMail($uID, $acData, $acMail, $mailSubject, $mailContent, $acDateSend);
+            self::generateBccMail($uID, $acData, $acMail, $mailSubject, $mailContent, $acDateSend, $uHash);
         }
 
         //Generic Event launch
@@ -274,6 +274,17 @@ class Abandoned
         }
     }
 
+    public static function getByHash($uHash)
+    {
+        $db = \Database::connection();
+        $rows = $db->GetAll("SELECT * FROM " . self::getTableName() . " WHERE uHash = ?;", array($uHash));
+        $carts = array();
+        foreach($rows as $row){
+          $carts[] = self::getByID($row['acID']);
+        }
+        return $carts;
+    }
+
     public static function getAbandonedCartByMail($email){
       $db = \Database::connection();
       $row = $db->GetOne("SELECT * FROM " . self::getTableName() . " WHERE acMail = ? AND acDateSend > DATE(NOW())", array($email));
@@ -310,7 +321,7 @@ class Abandoned
       return $results;
     }
 
-    public function generateBccMail($uID, $acData, $acMail, $mailSubject, $mailContent, $acDateSend){
+    public function generateBccMail($uID, $acData, $acMail, $mailSubject, $mailContent, $acDateSend, $uHash){
         $packageObject = Package::getByHandle('community_store_abandoned_cart');
 
         $mail_header = $packageObject->getConfig()->get('abandoned_cart.mail_header');
@@ -347,7 +358,6 @@ class Abandoned
         $mailHtml .= '</p>';
 
         $abandonedcart = new self();
-        $uHash = '';
         $mailSubject = $packageObject->getConfig()->get('abandoned_cart.bcc_subject');
         $acMail = $packageObject->getConfig()->get('abandoned_cart.bcc_mail');
 

@@ -100,7 +100,13 @@ class Controller extends Package{
           $abandonedcart = StoreAbandonedCart::getAbandonedCartByMail($email);
           if(is_object($abandonedcart)){
             //abandonedcart with this email has been found -> delete
-            $abandonedcart->delete();
+            //but also delete the other mails with the same uHash
+            $allcarts = StoreAbandonedCart::getByHash($abandonedcart->getUHash());
+            if(!empty($allcarts)){
+                foreach($allcarts as $abandonedc){
+                    $abandonedc->delete();
+                }
+            }
           }
       });
   }

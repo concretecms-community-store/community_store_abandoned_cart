@@ -121,7 +121,7 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <h4>BCC Mail</h4>
+      <h4>Copy Mail</h4>
     </div>
   </div>
   <div class="row">
@@ -139,13 +139,13 @@
   <div class="row">
     <div class="col-sm-6">
       <div class="form-group">
-          <label for="bcc_mail"><?= t('Bcc e-mail') ?></label>
+          <label for="bcc_mail"><?= t('Copy e-mail') ?></label>
           <?= $form->email('bcc_mail', $bcc_mail, array('placeholder'=>t('internal@email.com'))); ?>
       </div>
     </div>
     <div class="col-sm-6">
       <div class="form-group">
-          <label for="bcc_mail"><?= t('Bcc subject') ?></label>
+          <label for="bcc_mail"><?= t('Copy subject') ?></label>
           <?= $form->text('bcc_subject', $bcc_subject, array('placeholder'=>t('Abandoned cart in your eshop...'))); ?>
       </div>
     </div>
