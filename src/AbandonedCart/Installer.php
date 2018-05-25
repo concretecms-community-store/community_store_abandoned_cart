@@ -20,6 +20,10 @@ class Installer
       $pkg->getConfig()->save('abandoned_cart.from_mail', '');
       $pkg->getConfig()->save('abandoned_cart.from_name', '');
 
+      // BCC
+      $pkg->getConfig()->save('abandoned_cart.bcc_mail', '');
+      $pkg->getConfig()->save('abandoned_cart.bcc_subject', 'Abandoned cart in your eshop...');
+
       // header and footer Mails
       $pkg->getConfig()->save('abandoned_cart.mail_header', '<table width="98%" height="auto" border="0" cellpadding="0" cellspacing="0"><tr><td bgcolor="#ffffff" valign="top"><table width="600" border="0" cellpadding="0" cellspacing="0" align="center" style="max-width:600px;"><tr style="width:100%;min-width:100%;"><td style="border: none; width:100%;min-width:100%;" align="left" bgcolor="#ffffff" width="100%" border="0" cellpadding="0" cellspacing="0">');
       $pkg->getConfig()->save('abandoned_cart.mail_footer', '</td></tr></table></td></tr></table>');
@@ -54,7 +58,7 @@ class Installer
         }
     }
 
-    public static function update($pkg){
+    public static function upgrade($pkg){
         self::installSinglePages($pkg);
         self::installJobs($pkg);
     }

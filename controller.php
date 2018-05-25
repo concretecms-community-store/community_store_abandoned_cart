@@ -81,7 +81,7 @@ class Controller extends Package{
               array('javascript', 'community-store-abandoned-cart'),
           )
       );
-   
+
       $requestURI = $_SERVER['REQUEST_URI'];
       $requestArray = explode("/", $requestURI);
       $lastEl = array_values(array_slice($requestArray, -1))[0];

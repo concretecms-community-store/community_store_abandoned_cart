@@ -118,6 +118,38 @@
       </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h4>BCC Mail</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <p>
+        <?= t("Fill in an e-mail address that will receive the personal and product data every time an abandoned cart e-mail is send."); ?>
+        <br/>
+        <?= t("This e-mail address should be an internal e-mail address, because of sensitive data in the mails."); ?>
+        <br/>
+        <?= t("Leave this blank to not send any mails internally."); ?>
+      </p>
+      
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+          <label for="bcc_mail"><?= t('Bcc e-mail') ?></label>
+          <?= $form->email('bcc_mail', $bcc_mail, array('placeholder'=>t('internal@email.com'))); ?>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+          <label for="bcc_mail"><?= t('Bcc subject') ?></label>
+          <?= $form->text('bcc_subject', $bcc_subject, array('placeholder'=>t('Abandoned cart in your eshop...'))); ?>
+      </div>
+    </div>
+  </div>
   <div class="ccm-dashboard-form-actions-wrapper">
       <div class="ccm-dashboard-form-actions">
           <?= $form->submit('save', 'Save', array("class" => "pull-right btn btn-success")); ?>

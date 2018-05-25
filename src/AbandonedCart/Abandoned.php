@@ -4,6 +4,10 @@ namespace Concrete\Package\CommunityStoreAbandonedCart\Src\AbandonedCart;
 use Database;
 use Events;
 use Core;
+use Concrete\Core\User\UserInfo;
+use \Concrete\Package\CommunityStore\Src\CommunityStore\Product\Product as StoreProduct;
+use Concrete\Package\CommunityStore\Src\CommunityStore\Product\ProductOption\ProductOptionItem as StoreProductOptionItem;
+
 use Package;
 use \Symfony\Component\EventDispatcher\GenericEvent;
 use Concrete\Core\Support\Facade\Url as Url;
@@ -221,6 +225,11 @@ class Abandoned
 
         $abandonedcart->save();
 
+        $bccmail = $packageObject->getConfig()->get('abandoned_cart.bcc_mail');
+        if(!empty($bccmail)){
+            self::generateBccMail($uID, $acData, $acMail, $mailSubject, $mailContent, $acDateSend);
+        }
+
         //Generic Event launch
         $event = new GenericEvent();
         $event->setArgument('abandonedcart', $abandonedcart);
@@ -299,5 +308,60 @@ class Abandoned
       }
 
       return $results;
+    }
+
+    public function generateBccMail($uID, $acData, $acMail, $mailSubject, $mailContent, $acDateSend){
+        $packageObject = Package::getByHandle('community_store_abandoned_cart');
+
+        $mail_header = $packageObject->getConfig()->get('abandoned_cart.mail_header');
+        $mail_footer = $packageObject->getConfig()->get('abandoned_cart.mail_footer');
+        $mailHtml = $mail_header;
+
+        $mailHtml .= '<p>';
+        $mailHtml .= t("Following user received an abandoned cart e-mail:");
+        $mailHtml .= '<br/>';
+
+        if($uID != 0){
+            $ui = UserInfo::getByID($uID);
+            $mailHtml .= $ui->getUserName() . " ( " . $ui->getUserEmail() . " )";
+        }else{
+            $mailHtml .= $acMail;
+        }
+        $mailHtml .= '</p>';
+
+        $mailHtml .= '<p>';
+        $mailHtml .= t("These are the products the user has left in his/her cart:");
+        $mailHtml .= '<br/>';
+        $productInfos = json_decode($acData, true);
+        foreach($productInfos as $productInfo){
+            $product = StoreProduct::getByID($productInfo['product']['pID']);
+            $mailHtml .= $product->getName() . ' (quantity: ' . $productInfo['product']['qty'] . ')<br/>';
+            if(!empty($productInfo['productAttributes'])){
+                foreach($productInfo['productAttributes'] as $pAttribute){
+                    $productOption = StoreProductOptionItem::getByID($pAttribute);
+                    $mailHtml .= " &nbsp; &nbsp; " . $productOption->getName(). "<br/>";
+                }
+            }
+            $mailHtml .= '<br/>';
+        }
+        $mailHtml .= '</p>';
+
+        $abandonedcart = new self();
+        $uHash = '';
+        $mailSubject = $packageObject->getConfig()->get('abandoned_cart.bcc_subject');
+        $acMail = $packageObject->getConfig()->get('abandoned_cart.bcc_mail');
+
+        $abandonedcart->setUID($uID);
+        $abandonedcart->setAcData($acData);
+        $abandonedcart->setAcMail($acMail);
+        $abandonedcart->setAcContent($mailHtml);
+        $abandonedcart->setAcSubject($mailSubject);
+        $abandonedcart->setUHash($uHash);
+        $abandonedcart->setAcSent(0);
+        $abandonedcart->setAcDateAdded(new \DateTime());
+        $abandonedcart->setAcDateUpdated(new \DateTime());
+        $abandonedcart->setAcDateSend($acDateSend);
+
+        $abandonedcart->save();
     }
 }
